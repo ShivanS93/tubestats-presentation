@@ -4,11 +4,12 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>TubeStats</title>
 
+		
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+		<link rel="stylesheet" href="dist/theme/simple.css" id="theme">
 
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
@@ -16,8 +17,82 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section data-markdown>
+					# TubeStats
+					*A hobby project: Consistency in a YouTube channel*
+
+					Shivan Sivakumaran
+				</section>
+				<section data-markdown>
+					## Inspiration
+					- Ali Abdaal
+					- Consistency - how consistent?
+					- Getting better as a beginner
+					- www.tubestats.app
+				</section>
+				<section data-markdown>
+					## What does TubeStats do?
+					1. Takes user input
+					2. Provides statistics
+				</section>
+				<section data-background-image="tubestats_parsing.gif"
+					 data-background-size="750px">
+				</section>
+				<section data-markdown>
+					## 1. User input
+					```python
+					# Channel ID
+					'UCoOae5nYA7VqaXzerajD0lg'
+					# Link to channel
+					'https://www.youtube.com/channel/UCoOae5nYA7VqaXzerajD0lg'
+					# Link to video
+					'https://www.youtube.com/watch?v=epF2SYpWtos'
+					# Video ID
+					'epF2SYpWtos'
+					```
+				</section>
+				<section data-markdown>
+					## 2. Statistics
+					![](all-graph.png)
+				</section>
+				<section data-markdown>
+					![](time-diff.png)
+				</section>
+				<section data-markdown>
+					## How does TubeStats work?
+					### Part 1 of 2
+					1. How to set up a development environment?
+					2. How to access the video information?
+					3. How to store password and API keys?
+					4. How do we get and store the video statistics?
+				</section>
+				<section data-markdown>
+					## Development environment
+					```bash
+					$ mkdir tubestats
+					$ cd tubestats
+
+					$ python3 -m venv venv
+					$ source venv/bin/activate
+					$ (venv)
+
+					$ git init
+					```
+				</section>
+				<section data-markdown>
+					## Video information
+					- use `beautifulsoup`, `scraPY`, `selenium`
+					- YouTube Data API
+				</section>
+				<section data-markdown>
+					## How does TubeStats work?
+					### Part 2 of 2
+					5. How to organise the code?
+					6. How to test the code?
+					7. How to display the data and allow interaction?
+					8. How to account for variable input?
+
+
 			</div>
 		</div>
 
