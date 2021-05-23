@@ -85,6 +85,21 @@
 					- YouTube Data API
 				</section>
 				<section data-markdown>
+					## Storing passwords
+					- Hard code?
+					- `python-dotenv`
+					- `.env`
+					- `.gitignore`
+				</section>
+					<section data-markdown>
+						```python
+						from dotenv import load_dotenv
+
+						load_dotenv()
+						API_KEY = os.getenv('API_KEY')
+						```
+					</section>
+				<section data-markdown>
 					## How does TubeStats work?
 					### Part 2 of 2
 					5. How to organise the code?
