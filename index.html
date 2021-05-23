@@ -91,14 +91,23 @@
 					- `.env`
 					- `.gitignore`
 				</section>
-					<section data-markdown>
-						```python
-						from dotenv import load_dotenv
+				<section data-markdown>
+					```
+					# .env
+					
+					API_KEY=xxxxxxxx
+					```
 
-						load_dotenv()
-						API_KEY = os.getenv('API_KEY')
-						```
-					</section>
+					```python
+					# tubestats/youtube_api.py
+
+					from dotenv import load_dotenv
+
+					load_dotenv()
+					API_KEY = os.getenv('API_KEY')
+				
+					```
+				</section>
 				<section data-markdown>
 					## How does TubeStats work?
 					### Part 2 of 2
