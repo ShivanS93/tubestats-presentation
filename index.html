@@ -115,6 +115,7 @@
 					- Access API
 					- Channel upload playlist
 					- Video statistics
+					- `pandas` dataframe
 				</section>
 				<section data-markdown>
 					### 4. Get YouTube video statistics
@@ -132,40 +133,44 @@
 					```
 
 				</section>
-				<section>
-					<pre><code data-line-numbers="3|5-16|17-18|18-29|30-32"># tubestates/youtube_api.py
+				<section data-markdown>
+					```python [|3|5-16|17-18|20-29|30-32]
+					# tubestates/youtube_api.py
 
-upload_playlist_ID = channel_data['upload_playlist_ID']
+					upload_playlist_ID = channel_data['upload_playlist_ID']
 
-video_response = []
-next_page_token = None
-while True:
-    # obtaining video ID + titles
-    playlist_request = self.youtube.playlistItems().list(
-	    part='snippet,contentDetails',
-	    maxResults=50, # API Limit is 50
-	    pageToken=next_page_token,
-	    playlistId=upload_playlist_ID,
-	    )
-    playlist_response = playlist_request.execute()
-    # isolating video ID
-    vid_subset = [ vid_ID['contentDetails']['videoId'] 
-    			for vid_ID in playlist_response['items'] ]
-    # retrieving video statistics
-    vid_info_subset_request = self.youtube.videos().list(
-	part='snippet,contentDetails,statistics',
-	id=vid_subset
-	)
-    vid_info_subset_response = vid_info_subset_request.execute()
-    video_response.append(vid_info_subset_response)
-    # obtaining page token
-    next_page_token = playlist_response.get('nextPageToken') # get method used because token may not exist
-    if next_page_token is None:
-	break
+					video_response = []
+					next_page_token = None
+					while True:
+					    # obtaining video ID + titles
+					    playlist_request = self.youtube.playlistItems().list(
+						    part='snippet,contentDetails',
+						    maxResults=50, # API Limit is 50
+						    pageToken=next_page_token,
+						    playlistId=upload_playlist_ID,
+						    )
+					    playlist_response = playlist_request.execute()
+					    # isolating video ID
+					    vid_subset = [ vid_ID['contentDetails']['videoId'] 
+								for vid_ID in playlist_response['items'] ]
+					    # retrieving video statistics
+					    vid_info_subset_request = self.youtube.videos().list(
+						part='snippet,contentDetails,statistics',
+						id=vid_subset
+						)
+					    vid_info_subset_response = vid_info_subset_request.execute()
+					    video_response.append(vid_info_subset_response)
+					    # obtaining page token
+					    next_page_token = playlist_response.get('nextPageToken') # get method used because token may not exist
+					    if next_page_token is None:
+						break
 
-df = pd.json_normalize(video_response, 'items')
-return df
-					</code></pre>
+					df = pd.json_normalize(video_response, 'items')
+					return df
+				</section>
+				<section data-markdown>
+					### Video statistics
+					![](dataframe.png)
 				</section>
 				<section data-markdown>
 					## How does TubeStats work?
@@ -202,7 +207,7 @@ return df
 				</section>	
 				<section data-markdown>
 					## 6. Testing
-					```python [|16-20]
+					```python [|15-20]
 					# tests/tests_youtube_api.py
 					from tubestats.youtube_api import create_api, YouTubeAPI
 					from tests.test_settings import set_channel_ID_test_case
@@ -344,27 +349,43 @@ return df
 				</section>
 				<section data-markdown>
 					## Somethings I would like to discuss
+					- DataFrame and memory
+					- Error handling
+					- Async?
 				</section>
 				<section data-markdown>
-						df = self.df
-						df = df[['snippet.publishedAt',
-						    'snippet.title',
-						    ...
-						    'statistics.favoriteCount',
-						    'statistics.commentCount']]
-        
-        df = df.fillna(0)
+					### DataFrame immutability and memory?
+					```python []
+					df = self.df
+					df = df[['snippet.publishedAt',
+					    'snippet.title',
+					    ...
+					    'statistics.favoriteCount',
+					    'statistics.commentCount']]
 
-        # changing dtypes
-        df = df.astype({'statistics.viewCount': 'int',
-		...
-            'statistics.commentCount': 'int',})
-        # applying natural log to view count as data is tail heavy
-        df['statistics.viewCount_NLOG'] = df['statistics.viewCount'].apply(lambda x : np.log(x))
+					df = df.fillna(0)
 
-        df = df.sort_values(by='snippet.publishedAt_REFORMATED', ascending=True) 
-        return DataFrame)	
+					df = df.astype({'statistics.viewCount': 'int',
+						...
+					    'statistics.commentCount': 'int',})
+					df['statistics.viewCount_NLOG'] = df['statistics.viewCount'].apply(lambda x : np.log(x))
+
+					df = df.sort_values(by='snippet.publishedAt_REFORMATED', ascending=True) 
 				</section>
+				<section data-markdown>
+					## What did I learn
+					- Project based learning
+					- 'minimal viable product'
+				</section>
+				<section data-markdown>
+					## Conclusion
+					- Analysing consistency
+					- YouTube Data API --> Heroku
+					- Share your work!
+				</section>
+				<section data-markdown>
+					## Acknowledgements
+					- Menno
 
 			</div>
 		</div>
