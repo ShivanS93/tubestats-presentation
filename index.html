@@ -143,7 +143,7 @@
 					next_page_token = None
 					while True:
 					    # obtaining video ID + titles
-					    playlist_request = self.youtube.playlistItems().list(
+					    playlist_request = youtube.playlistItems().list(
 						    part='snippet,contentDetails',
 						    maxResults=50, # API Limit is 50
 						    pageToken=next_page_token,
@@ -154,7 +154,7 @@
 					    vid_subset = [ vid_ID['contentDetails']['videoId'] 
 								for vid_ID in playlist_response['items'] ]
 					    # retrieving video statistics
-					    vid_info_subset_request = self.youtube.videos().list(
+					    vid_info_subset_request = youtube.videos().list(
 						part='snippet,contentDetails,statistics',
 						id=vid_subset
 						)
@@ -252,8 +252,8 @@
 					def scatter_all_videos(self, df: pd.core.frame.DataFrame) -> alt.vegalite.v4.Chart:
 						df_views = df
 						c = alt.Chart(df_views, title='Plot of videos over time').mark_point().encode(
-							x=alt.X('snippet\.publishedAt_REFORMATED:T', axis=alt.Axis(title='Date Published')),
-							y=alt.Y('statistics\.viewCount_NLOG:Q', axis=alt.Axis(title='Natural Log of Views')),
+							x=alt.X('snippet\.publishedAt_REFORMATED:T', axis=alt.Axis(title='Date Published'), scale=alt.Scale(type='log')),
+							y=alt.Y('statistics\.viewCount:Q', axis=alt.Axis(title='View Count')),
 							color=alt.Color('statistics\.like-dislike-ratio:Q', scale=alt.Scale(scheme='turbo'), legend=None),
 							tooltip=['snippet\.title:N', 'statistics\.viewCount:Q', 'statistics\.like-dislike-ratio:Q'],
 							size=alt.Size('statistics\.viewCount:Q', legend=None)
@@ -335,7 +335,6 @@
 				</section>
 				<section data-markdown>
 					### 8. Different user input
-					![](regex.png)
 					```python []
 					import re
 
@@ -346,6 +345,10 @@
 					    return m.group(6) # Channel ID
 					elif video_id == 'user':
 					    channel_username = m.group(6) # Channel Username
+				</section>
+				<section data-markdown>
+					### 8. Different user input
+					![](regex.png)
 				</section>
 				<section data-markdown>
 					## Somethings I would like to discuss
